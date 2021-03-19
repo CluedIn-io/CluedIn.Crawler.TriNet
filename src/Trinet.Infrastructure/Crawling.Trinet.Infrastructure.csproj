@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Trinet.Core\Crawling.Trinet.Core.csproj" />
+  </ItemGroup>
+</Project>

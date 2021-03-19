@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Trinet.Core\Crawling.Trinet.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\Trinet.Crawling\Crawling.Trinet.csproj" />
+    <ProjectReference Include="..\..\..\src\Trinet.Infrastructure\Crawling.Trinet.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
