@@ -10,6 +10,7 @@ namespace CluedIn.Crawling.Trinet.Core
         public struct KeyName
         {
             public const string ApiKey = nameof(ApiKey);
+            public const string CompanyId = nameof(CompanyId);
         }
 
         // TODO Complete the following section

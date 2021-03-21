@@ -24,7 +24,11 @@ namespace CluedIn.Crawling.Trinet
             var client = clientFactory.CreateNew(trinetcrawlJobData);
 
             //retrieve data from provider and yield objects
-            
+
+            foreach (var employee in client.GetEmployee())
+            {
+                yield return employee;
+            }
         }       
     }
 }

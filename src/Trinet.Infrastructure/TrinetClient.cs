@@ -6,6 +6,8 @@ using CluedIn.Crawling.Trinet.Core;
 using Newtonsoft.Json;
 using RestSharp;
 using Microsoft.Extensions.Logging;
+using CluedIn.Crawling.Trinet.Core.Models;
+using System.Collections.Generic;
 
 namespace CluedIn.Crawling.Trinet.Infrastructure
 {
@@ -21,6 +23,8 @@ namespace CluedIn.Crawling.Trinet.Infrastructure
         private readonly ILogger<TrinetClient> log;
 
         private readonly IRestClient client;
+
+        private readonly TrinetCrawlJobData _trinetCrawlJobData;
 
         public TrinetClient(ILogger<TrinetClient> log, TrinetCrawlJobData trinetCrawlJobData, IRestClient client) // TODO: pass on any extra dependencies
         {
@@ -39,32 +43,30 @@ namespace CluedIn.Crawling.Trinet.Infrastructure
 
             // TODO use info from trinetCrawlJobData to instantiate the connection
             client.BaseUrl = new Uri(BaseUri);
-            client.AddDefaultParameter("api_key", trinetCrawlJobData.ApiKey, ParameterType.QueryString);
+            _trinetCrawlJobData = trinetCrawlJobData;
         }
 
-        private async Task<T> GetAsync<T>(string url)
+        public IEnumerable<Employee> GetEmployee()
         {
-            var request = new RestRequest(url, Method.GET);
+            var authclient = new RestClient("https://api.trinet.com/oauth");
+            var authrequest = new RestRequest("accesstoken", Method.GET);
+            authrequest.AddParameter("grant_type", "client_credentials");
+            authrequest.AddHeader("Authorization", string.Format("Basic {0}", _trinetCrawlJobData.ApiKey));
+            var authresponse = authclient.Execute<AuthenticationModel>(authrequest);
+            var accessToken = authresponse.Data.AccessToken;
 
-            var response = await client.ExecuteAsync(request, request.Method);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                var diagnosticMessage = $"Request to {client.BaseUrl}{url} failed, response {response.ErrorMessage} ({response.StatusCode})";
-                log.LogError(diagnosticMessage);
-                throw new InvalidOperationException($"Communication to jsonplaceholder unavailable. {diagnosticMessage}");
-            }
-
-            var data = JsonConvert.DeserializeObject<T>(response.Content);
-
-            return data;
+            var client = new RestClient(string.Format("https://api.trinet.com/v1/company/{0}", _trinetCrawlJobData.CompanyId));
+            var request = new RestRequest("employees", Method.GET);
+            request.AddHeader("grant_type", "client_credentials");
+            request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
+            var response = client.Execute<EmployeeResponse>(request);
+            var content = response.Data.Data.EmployeeData;
+            return content;
         }
 
         public AccountInformation GetAccountInformation()
         {
-            //TODO - return some unique information about the remote data source
-            // that uniquely identifies the account
-            return new AccountInformation("", "");
+            return new AccountInformation(_trinetCrawlJobData.CompanyId, _trinetCrawlJobData.CompanyId);
         }
     }
 }

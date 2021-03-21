@@ -5,5 +5,7 @@ namespace CluedIn.Crawling.Trinet.Core
     public class TrinetCrawlJobData : CrawlJobData
     {
         public string ApiKey { get; set; }
+
+        public string CompanyId { get; set; }
     }
 }

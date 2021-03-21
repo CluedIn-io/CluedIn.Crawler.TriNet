@@ -76,6 +76,7 @@ namespace CluedIn.Provider.Trinet
                 //TODO add the transformations from specific CrawlJobData object to dictionary
                 // add tests to GetHelperConfigurationBehaviour.cs
                 dictionary.Add(TrinetConstants.KeyName.ApiKey, trinetCrawlJobData.ApiKey);
+                dictionary.Add(TrinetConstants.KeyName.CompanyId, trinetCrawlJobData.CompanyId);
             }
 
             return await Task.FromResult(dictionary);
