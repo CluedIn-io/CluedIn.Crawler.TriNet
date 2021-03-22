@@ -1,17 +1,12 @@
+
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
   branches:
     include:
-    - master
     - develop
+    - master
     - release/*
-  tags:
-    include:
-      - v*
-  paths:
-    exclude:
-    - '*.md'
 
 pr:
   branches:
@@ -19,9 +14,6 @@ pr:
     - develop
     - master
     - release/*
-  paths:
-    exclude:
-    - '*.md'
 
 resources:
   repositories:
@@ -29,6 +21,7 @@ resources:
       type: github
       name: CluedIn-io/AzurePipelines.Templates
       endpoint: 'CluedIn-io'
+      ref: refs/heads/refactor
 
 pool:
   vmImage: 'windows-latest'
@@ -41,9 +34,12 @@ variables:
     value: true
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
     value: true
+  - name: buildConfiguration
+    value: Release
 
 steps:
-# Configure NuGet
+
+  # Configure NuGet
 - pwsh: |
     @('develop','release','AzurePipelines') | ForEach-Object{
         dotnet nuget update  source $_ -p $env:NUGET_KEY -u VssSessionToken --configfile nuget.config
@@ -53,6 +49,4 @@ steps:
   env:
     NUGET_KEY: $(nuget.key)
 
-- template: crawler.netcore.build.yml@templates
-
-- template: documentation.publish.yml@templates
+- template: crawler.build.yml@templates
