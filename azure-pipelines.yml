@@ -5,6 +5,7 @@ trigger:
     include:
     - master
     - develop
+    - release/*
   tags:
     include:
       - v*
@@ -51,7 +52,7 @@ steps:
   displayName: 'Add api token to access nuget artifacts'
   env:
     NUGET_KEY: $(nuget.key)
-    
+
 - template: crawler.netcore.build.yml@templates
 
 - template: documentation.publish.yml@templates
