@@ -12,7 +12,7 @@ namespace CluedIn.Provider.Trinet.Unit.Test.TrinetProvider
 {
     public class GetCrawlJobDataBehaviour : TrinetProviderTest
     {
-        private readonly ProviderUpdateContext _context;
+         private readonly ProviderUpdateContext _context;
 
         public GetCrawlJobDataBehaviour()
         {

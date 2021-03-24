@@ -41,8 +41,13 @@ namespace CluedIn.Provider.Trinet
             if (configuration.ContainsKey(TrinetConstants.KeyName.ApiKey))
             {
                 trinetCrawlJobData.ApiKey = configuration[TrinetConstants.KeyName.ApiKey].ToString();
+            }
+
+            if (configuration.ContainsKey(TrinetConstants.KeyName.CompanyId))
+            {
                 trinetCrawlJobData.CompanyId = configuration[TrinetConstants.KeyName.CompanyId].ToString();
             }
+
 
             return await Task.FromResult(trinetCrawlJobData);
         }
