@@ -33,13 +33,20 @@ namespace CluedIn.Crawling.Trinet.Core
             token = new Control[]
             {
         // You can define controls to show in the GUI in order to authenticate with this integration
-        //        new Control()
-        //        {
-        //            displayName = "API key",
-        //            isRequired = false,
-        //            name = "api",
-        //            type = "text"
-        //        }
+                new Control()
+                {
+                    displayName = "API key",
+                    isRequired = true,
+                    name = "ApiKey",
+                    type = "text"
+                },
+                new Control()
+                {
+                    displayName = "Company Id",
+                    isRequired = true,
+                    name = "CompanyId",
+                    type = "text"
+                }
             }
         };
 
